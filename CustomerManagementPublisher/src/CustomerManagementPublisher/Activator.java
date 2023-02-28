@@ -2,17 +2,26 @@ package CustomerManagementPublisher;
 
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
+import org.osgi.framework.ServiceRegistration;
 
 public class Activator implements BundleActivator {
-
-	@Override
-	public void start(BundleContext context) throws Exception {
-		System.out.println("Hello World!!");
-	}
 	
-	@Override
-	public void stop(BundleContext context) throws Exception {
-		System.out.println("Goodbye World!!");
+	private ServiceRegistration serviceRegistration;
+
+	public void start(BundleContext bundleContext) throws Exception {
+		
+		System.out.println("User Publisher Service Started");
+		
+		ICustomerService customerService = new CustomerImpl();
+		
+		serviceRegistration = bundleContext.registerService(ICustomerService.class.getName(), customerService , null);
+	}
+
+	public void stop(BundleContext bundleContext) throws Exception {
+		
+		System.out.println("Customer Publisher Service Stopped");
+		
+		serviceRegistration.unregister();
 	}
 
 }
