@@ -2,17 +2,26 @@ package InventoryManagementPublisher;
 
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
+import org.osgi.framework.ServiceRegistration;
 
 public class Activator implements BundleActivator {
-
-	@Override
-	public void start(BundleContext context) throws Exception {
-		System.out.println("Hello World!! Publisher");
-	}
 	
-	@Override
-	public void stop(BundleContext context) throws Exception {
-		System.out.println("Goodbye World!! Publisher");
+	private ServiceRegistration serviceRegistration;
+
+	public void start(BundleContext bundleContext) throws Exception {
+		
+		System.out.println("Inventory Publisher Service Started");
+		
+		IInventoryService inventoryService = new InventoryImpl();
+		
+		serviceRegistration = bundleContext.registerService(IInventoryService.class.getName(), inventoryService, null);
+	}
+
+	public void stop(BundleContext bundleContext) throws Exception {
+		
+		System.out.println("Inventory Publisher Service Stopped");
+		
+		serviceRegistration.unregister();
 	}
 
 }
