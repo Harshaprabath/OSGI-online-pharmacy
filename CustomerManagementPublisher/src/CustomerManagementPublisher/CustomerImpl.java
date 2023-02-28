@@ -189,7 +189,7 @@ public class CustomerImpl implements ICustomerService{
 					String.format
 					(
 							"%20s %20s %20s %20s %20s\n", 
-							"BookId", "Name", "Code", "Brand", "Price"
+							"Medicine Id", "Name", "Code", "Brand", "Price"
 					)
 			);
 			
