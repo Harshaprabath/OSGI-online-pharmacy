@@ -16,7 +16,7 @@ public class Activator implements BundleActivator {
 		
 		IDbContext dbContext = new DbContextImpl();
 		serviceRegistration = bundleContext.registerService(IDbContext.class.getName(), dbContext, null);
-		System.out.println("BookStore Data Publisher Service Started");
+		System.out.println("Pharmacy Store Data Publisher Service Started");
 	}
 
 	public void stop(BundleContext bundleContext) throws Exception {

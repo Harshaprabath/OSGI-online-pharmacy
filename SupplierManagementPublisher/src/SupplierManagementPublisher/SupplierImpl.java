@@ -7,12 +7,14 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.Scanner;
+import java.io.File;
+import java.io.FileWriter;
 
-//import SupplierManagementPublisher,
+
 
 public class SupplierImpl implements ISupplierService {
 
-	//database connection	
+	
 	private Connection connection = null; 
 	private IDbContext  dbContext;
 	private Statement statement;
@@ -60,7 +62,7 @@ public class SupplierImpl implements ISupplierService {
 		
 		try {
 			
-			String query = "INSERT INTO supplier VALUES( ?, ?, ?, ?, ?, ?, ?, ?, '1')";
+			String query = "INSERT INTO supplier VALUES( 0,?, ?, ?, ?, ?, ?, ?, ?, '1')";
 			
 			preparedStatement = connection.prepareStatement(query); 
 			
@@ -85,5 +87,200 @@ public class SupplierImpl implements ISupplierService {
 			System.out.println("supplierSaveError : " + ex.getMessage());
 		}
 	}
+
+	@Override
+	public void getAllSupplierDetails() {
+		try {
+			
+			String query = "SELECT id, firstName, lastName, email, nic, address, mobileNumber , companyName FROM supplier WHERE isActive = 1 ";
+			
+			statement = connection.createStatement();
+			resultSet = statement.executeQuery(query);
+			
+			System.out.println("\n======================================================================== Supplier  Details ==================================================================================\n");
+			System.out.println
+			(
+					String.format
+					(
+							"%20s %20s %20s %25s %20s %20s %20s %20s\n", 
+							"SupplierId", "First Name", "Last Name", "Email", "NIC" , "Address", "Mobile Number", "CompanyName"
+					)
+			);
+			
+			System.out.println("-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
+			
+			
+			while(resultSet.next()) {
+				
+				System.out.printf
+				(
+						"%20d %20s %20s %30s %20s %20s %20s %20s\n", 
+						resultSet.getInt("id"),
+						resultSet.getString("firstName"),
+						resultSet.getString("lastName"),
+						resultSet.getString("email"),
+						resultSet.getString("nic"),
+						resultSet.getString("address"),
+						resultSet.getString("mobileNumber"),
+						resultSet.getString("companyName")
+						
+						
+				);
+				
+				System.out.println("-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
+			}
+			
+			
+			
+		}catch(Exception ex) {
+			
+			System.out.println("getAllSupplierDetailsException:" + ex.getMessage());
+			
+		}
+		
+	}
+
+	@Override
+	public void deleteSupplier() {
+		
+		Integer supplierId;
+		
+		System.out.print("\nPlease enter Supplier id : ");
+		supplierId = (sc.nextInt());
+		
+		try {
+			
+			String query = "UPDATE supplier SET isActive = 0 WHERE id = ?";
+			
+			preparedStatement = connection.prepareStatement(query);
+			preparedStatement.setInt(1, supplierId);
+			int isSuccess = preparedStatement.executeUpdate();
+			
+			if(isSuccess > 0) {
+				
+				System.out.println("Delete supplier has been successfully..");
+				
+			}else {
+				
+				System.out.println("Cannot find supplier..");
+				
+			}
+			
+		}catch (Exception ex) {
+			
+			System.out.println("supplierDeleteException : " + ex.getMessage());
+			
+		}
+		
+	}
+
+	@Override
+	public void getSupplierById() {
+		Integer supplierId;
+		
+		System.out.println("Enter Supplier Id : ");
+		supplierId = (sc.nextInt());
+		
+		String query = "SELECT * FROM supplier WHERE id = '"+ supplierId +"' && isActive = 1";
+		
+		try {
+			
+			statement = connection.createStatement();
+			resultSet = statement.executeQuery(query);
+			
+			while (resultSet.next()) {  
+				
+				System.out.printf
+				(
+						"\n Supplier Id: %d\n Supplier First Name: %s\n Supplier Last Name: %s\n Supplier Email: %s\n Supplier NIC: %s\n Supplier Address: %s\n Supplier No: %s\n Supplier Company Name: %s\n", 
+						resultSet.getInt("id"),
+						resultSet.getString("firstName"),
+						resultSet.getString("lastName"),
+						resultSet.getString("email"),
+						resultSet.getString("nic"),
+						resultSet.getString("address"),
+						resultSet.getString("mobileNumber"),
+						resultSet.getString("companyName")
+						
+						
+				);
+			}
+
+		} catch (Exception ex) {
+			
+			System.out.println("Error has been occured please try again");
+			System.out.println(ex.getMessage());
+			
+		}
+	}
+
+
+
+	@Override
+	public void genarateSupplierDetailsReport() {
+		try {
+			
+			String query = "SELECT id, firstName, lastName, email, nic, address, mobileNumber , companyName FROM supplier WHERE isActive = 1 ";
+			
+			statement = connection.createStatement();
+			resultSet = statement.executeQuery(query);
+			
+			File directory = new File("D:\\OSGI\\Assignment-01");
+			
+			directory.mkdirs();
+			
+			File file = new File(directory,"SupplierList.txt");
+			FileWriter fileWriter = new FileWriter(file);
+			
+			fileWriter.write(String.format("=========================================================== Supplier Details Report =========================================================================\n"));
+			fileWriter.write(
+					
+					String.format
+					(
+							"%20s %20s %20s %25s %20s %20s %20s %20s\n", 
+							"SupplierId", "First Name", "Last Name", "Email", "NIC" , "Address", "Mobile Number", "CompanyName"
+					)
+			);
+			
+			fileWriter.write(String.format("==============================================================================================================================================================\n"));
+			
+			while(resultSet.next()) {
+				
+				fileWriter.write(
+						
+						String.format(
+								
+								"%20d %20s %20s %30s %20s %20s %20s %20s\n", 
+								resultSet.getInt("id"),
+								resultSet.getString("firstName"),
+								resultSet.getString("lastName"),
+								resultSet.getString("email"),
+								resultSet.getString("nic"),
+								resultSet.getString("address"),
+								resultSet.getString("mobileNumber"),
+								resultSet.getString("companyName")
+								
+						)
+				);
+				
+				fileWriter.write(String.format("---------------------------------------------------------------------------------------------------------------------------------------------------------\n"));
+			}
+			
+			fileWriter.flush();
+			fileWriter.close();
+			
+			
+			System.out.println("Report genaration has been successfully");
+				
+			
+		}catch (Exception ex) {
+			
+			System.out.println("genarateSupplierDetailsReportException:" + ex.getMessage());
+			
+			
+		}
+	}
+
+	
 	
 }

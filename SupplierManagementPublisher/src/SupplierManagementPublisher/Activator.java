@@ -2,17 +2,26 @@ package SupplierManagementPublisher;
 
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
+import org.osgi.framework.ServiceRegistration;
 
 public class Activator implements BundleActivator {
 
-	@Override
-	public void start(BundleContext context) throws Exception {
-		System.out.println("Hello World!! SupplierManagementPublisher");
-	}
+	private ServiceRegistration serviceRegistration;
+
 	
-	@Override
-	public void stop(BundleContext context) throws Exception {
-		System.out.println("Goodbye World!! SupplierManagementPublisher");
+	public void start(BundleContext bundleContext) throws Exception {
+		
+		System.out.println("Supplier Publisher Service Started");
+		
+		ISupplierService supplierService = new SupplierImpl();
+		
+		serviceRegistration = bundleContext.registerService(ISupplierService.class.getName(), supplierService, null);
+		
+	}
+
+	public void stop(BundleContext bundleContext) throws Exception {
+		System.out.println("Supplier Publisher Service Stopped");
+		serviceRegistration.unregister();
 	}
 
 }
