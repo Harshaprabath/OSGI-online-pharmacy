@@ -13,12 +13,25 @@ public class Supplier {
 	private String password;
 	private boolean isActive;
 	
-	//Default Constructor
 	public Supplier() {
 		super();
 	}
 
-	//Setters and Getters
+	public Supplier(int id, String firstName, String lastName, String email, String nic, String address,
+			String mobileNumber, String companyName, String password, boolean isActive) {
+		super();
+		this.id = id;
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.email = email;
+		this.nic = nic;
+		this.address = address;
+		this.mobileNumber = mobileNumber;
+		this.companyName = companyName;
+		this.password = password;
+		this.isActive = isActive;
+	}
+
 	public int getId() {
 		return id;
 	}
@@ -97,6 +110,8 @@ public class Supplier {
 
 	public void setActive(boolean isActive) {
 		this.isActive = isActive;
-	}	
+	}
+	
+	
 	
 }

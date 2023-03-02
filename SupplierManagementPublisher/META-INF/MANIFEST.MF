@@ -3,6 +3,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: SupplierManagementPublisher
 Bundle-SymbolicName: SupplierManagementPublisher
 Bundle-Version: 1.0.0.qualifier
+Export-Package: SupplierManagementPublisher
 Bundle-Activator: SupplierManagementPublisher.Activator
 Bundle-Vendor: MTIT
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
