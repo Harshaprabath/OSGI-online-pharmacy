@@ -232,7 +232,7 @@ public class SupplierImpl implements ISupplierService {
 			File file = new File(directory,"SupplierList.txt");
 			FileWriter fileWriter = new FileWriter(file);
 			
-			fileWriter.write(String.format("=========================================================== Supplier Details Report =================\n"));
+			fileWriter.write(String.format("=========================================================== Supplier Details Report =========================================================================\n"));
 			fileWriter.write(
 					
 					String.format
@@ -242,7 +242,7 @@ public class SupplierImpl implements ISupplierService {
 					)
 			);
 			
-			fileWriter.write(String.format("======================================================================================================\n"));
+			fileWriter.write(String.format("==============================================================================================================================================================\n"));
 			
 			while(resultSet.next()) {
 				
@@ -263,7 +263,7 @@ public class SupplierImpl implements ISupplierService {
 						)
 				);
 				
-				fileWriter.write(String.format("-------------------------------------------------------------------------------------------------\n"));
+				fileWriter.write(String.format("---------------------------------------------------------------------------------------------------------------------------------------------------------\n"));
 			}
 			
 			fileWriter.flush();
